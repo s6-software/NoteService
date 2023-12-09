@@ -1,3 +1,7 @@
+using MongoDB.Driver;
+using MongoDB.Bson;
+using Microsoft.Extensions.Configuration;
+
 
 namespace NoteService
 {
@@ -15,6 +19,22 @@ namespace NoteService
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            string? connectionstring = app.Configuration.GetConnectionString("DefaultConntectionString");
+            var settings = MongoClientSettings.FromConnectionString(connectionstring);
+            settings.ServerApi = new ServerApi(ServerApiVersion.V1);
+
+            var client = new MongoClient(settings);
+
+            try
+            {
+                var result = client.GetDatabase("admin").RunCommand<BsonDocument>(new BsonDocument("ping", 1));
+                Console.WriteLine("Pinged your deployment. You successfully connected to MongoDB!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
