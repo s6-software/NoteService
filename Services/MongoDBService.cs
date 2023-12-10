@@ -27,6 +27,6 @@ public class MongoDBService{
 
     public async Task<List<Note>> GetAllAsync()
     {
-        return await _notes.Find(new BsonDocument()).ToListAsync();
+        return await _notes.Find(note => true).ToListAsync();
     }
 }

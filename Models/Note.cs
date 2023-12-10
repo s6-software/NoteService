@@ -4,14 +4,19 @@ using System.Collections.Generic;
 
 namespace Models
 {
-    public class Note
+    public class Block
     {
+        public string type { get; set; } = null!;
+        public object data { get; set; } = null!;
+    }
+    public class Note
+        {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; } = null!;
 
         public string Title { get; set; } = null!;
 
-        public List<object> Blocks { get; set; } = new List<object>();
+        public List<Block> Blocks { get; set; } = new List<Block>();
     }
 }
